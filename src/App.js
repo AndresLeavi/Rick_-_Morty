@@ -5,7 +5,7 @@ import About from './components/About';
 import Detail from './components/Detail';
 import { useState } from 'react';
 import axios from 'axios'; 
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 const URL_BASE = 'https://be-a-rym.up.railway.app/api/character';
 const API_KEY = '4df0e452e97d.cf900310493aaf10e4b9';

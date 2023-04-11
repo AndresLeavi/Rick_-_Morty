@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 const URL_BASE = 'https://be-a-rym.up.railway.app/api/character';
@@ -28,10 +28,7 @@ const Detail = () => {
 
             <div>
               <div>
-                <button>
-                    <Link to='/home'>Home</Link>
-                </button>
-                <h1>{character?.name}</h1>
+               <p>{character?.name}</p>
               </div>
 
               <div >
@@ -40,14 +37,10 @@ const Detail = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="status">Status: </label>
-                  <p>{character?.status}</p>
-                  <label htmlFor="specie">Specie: </label>
-                  <p>{character?.species}</p>
-                  <label htmlFor="gender">Gender: </label>
-                  <p>{character?.gender}</p>
-                  <label htmlFor="origin">Origin: </label>
-                  <p>{character?.origin?.name}</p>
+                  <p>Status: {character?.status} </p>
+                  <p>Specie:{character?.species}</p>
+                  <p>Gender: {character?.gender} </p>
+                  <p>Origin: {character?.origin?.name} </p>
                 </div>
               </div>
             </div>
