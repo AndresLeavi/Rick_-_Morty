@@ -34,7 +34,7 @@ function App() {
 
    useEffect(()=> {
       !acces && navigate ('/') // si acces está en false me deja en "/"
-   }, [acces]) // sino me manda a home definido en el if previo
+   }, [acces, navigate]) // sino me manda a home definido en el if previo
    
    
    const onSearch = (id) => { // id llega desde searchbar (lo que escribe user en input)
