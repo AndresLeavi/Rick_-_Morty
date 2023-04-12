@@ -1,11 +1,15 @@
 import './App.css';
 import Cards from './components/Cards';
-import Nav from './components/Nav'; 
-import About from './components/About';
-import Detail from './components/Detail';
-import { useState } from 'react';
+import Nav from './components/Nav/Nav'; 
+import About from './components/About/About';
+import Detail from './components/Detail/Detail';
 import axios from 'axios'; 
 import { Routes, Route } from 'react-router-dom';
+import { useState, useEffect, useLocation, useNavigate } from 'react';
+import Form from './components/Form/Form';
+import Contact from './components/Contact/Contact'
+
+
 
 const URL_BASE = 'https://be-a-rym.up.railway.app/api/character';
 const API_KEY = '4df0e452e97d.cf900310493aaf10e4b9';
@@ -13,12 +17,31 @@ const API_KEY = '4df0e452e97d.cf900310493aaf10e4b9';
 function App() {
    const [characters, setCharacters] = useState([]);
 
-   // const onSearch = () => {
-   //    setCharacters([...characters, example]) // Al poner los puntitos, ...characters se copiara lo que tiene example mas lo de contiene caracter.
+   const location = useLocation();
 
-   // }
+   const [access, setAccess] = useState(false)
 
-   function onSearch(id) {
+   const username = 'andresleavi@gmail.com';
+
+   const password = 'Andres1997';
+
+   const navigate = useNavigate();
+
+   function Login(userData) {
+
+      if (userData.username === username && userData.password === password) {
+       setAccess(true);
+       navigate('/home')
+      }
+      }
+   
+     useEffect(() => {
+         !access && navigate('/');
+         }, [access]);
+    
+
+
+   const onSearch = (id) => {
       axios(`${URL_BASE}/${id}?key=${API_KEY}`)
       .then( response => response.data)
       .then((data) => {
@@ -43,6 +66,7 @@ function App() {
         <Routes>           
             <Route path='/home' element={ <Cards characters={characters} onClose={onClose}/> }/>
             <Route path='/about' element={<About/>} />
+            <Route path= '/contact' element= {<Contact/>}/>
             <Route path='/detail/:id' element={<Detail/>} />
          </Routes>  
       </div>
