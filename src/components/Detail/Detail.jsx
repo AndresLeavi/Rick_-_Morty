@@ -2,6 +2,7 @@ import axios from 'axios';
 import style from './Detail.module.css'
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+
 // useParams nos permite acceder a una variable, por ejemplo la del link /detail/56 (id)
 
 
