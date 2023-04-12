@@ -1,54 +1,55 @@
+import style from './Form.module.css'
+import { useState } from 'react';
 
-import React from 'react'
-import validate from './validation'
-import styles from './Form.module.css'
+import validation from '../Validation/Validation';
 
-export default function Form(props) {
-const [userData, setUserData] = React.useState({ username: '',
-password: '' });
-  
-const [errors, setErrors] = React.useState({ username: '',
-password: '' });
+const Form = ({login}) => {
+
+    const [errors, setErrors] = useState ({})
+
+    const [userData, setUserData] = useState({
+        email:'', 
+        password:''
+    });
+
+    const handleChange = (event) => {
+        setUserData({
+            ...userData, // copia de lo previo
+            [event.target.name]: event.target.value // .name para llamar a email o password según corresponda
+        })
+
+        setErrors(validation({
+            ...userData,
+            [event.target.name]: event.target.value
+        }))
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault(); // evita que se recargue la web
+        login(userData);
+    }
+
+    
+
+    return(
+        <form onSubmit={handleSubmit} className={style.formCaja} >
+            <label htmlFor="email">Email: </label>
+            <input type="text" name='email' value={userData.email} onChange={handleChange}/>
+            {errors.email && <p style={{color:"red", fontSize:"11pt"}}>{errors.email}</p>}
+            <label htmlFor="password">Password: </label>
+            <input type="password" name='password' value={userData.password} onChange={handleChange}/>
+            {errors.password && <p style={{color:"red", fontSize:"11pt"}}>{errors.password}</p>}
 
 
-const handleInputChange = (event) => {
-const {name,value} = event.target
-
-setUserData({
-  ...userData,
-[name]: value
-})
-
-setErrors(validate({
-  ...userData,
-  [name]: value
-})
-)
-console.log(errors)
+            <button>Submit</button>
+        </form>
+    )
 }
 
+export default Form; 
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  props.login(userData)
-}
-  
 
-  
-  return (
-    <form onSubmit={handleSubmit} className= {styles.container}>
-      <h2>Log in to join the rick and morty's adventures</h2>
-       <img className={styles.image} src='https://media3.giphy.com/media/l378BzHA5FwWFXVSg/giphy.gif' alt=''/>
-       <label>Username:</label>
-        <input type='text' name='username'value={userData.username} onChange={handleInputChange} placeholder= 'write your username' className={styles.input} ></input>
-        {errors.username ? <p style={{color: 'red'}}>{errors.username}</p> : null}
+// onChange queda atento a los cambios que hace el usuario en los inputs (email/contraseña) y le avisa a handleChange
+// en handleChange tengo el State donde voy a hacer cambio del estado para que coindida con lo que ingresa el usuario
 
-       <label>Password:</label>
-        <input type='text' name='password' value={userData.password} onChange={handleInputChange} placeholder= 'write your password' className={styles.input}></input>
-        {errors.password ? <p style={{color: 'red'}}>{errors.password}</p> : null}
-
-     <button type='submit' className={styles.btn}>Log In</button>
-
-    </form>
-  )
-}
+// los estados NO se importan, se pueden pasar como parámetro 

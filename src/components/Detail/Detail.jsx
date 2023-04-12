@@ -1,49 +1,41 @@
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import style from './Detail.module.css'
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import styles from './Detail.module.css'
+// useParams nos permite acceder a una variable, por ejemplo la del link /detail/56 (id)
+
 
 const URL_BASE = 'https://be-a-rym.up.railway.app/api/character';
 const API_KEY = '4df0e452e97d.cf900310493aaf10e4b9';
 
 const Detail = () => {
-    const { id } = useParams();
-    const [character, setCharacter] = useState({});
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        axios(`${URL_BASE}/${id}?key=${API_KEY}`)
-        .then(response => response.data)
-        .then((data) => {
-           if (data.name) {
-              setCharacter(data);
-           } else {
-              window.alert('No hay personajes con ese ID');
-           }
-        });
-        return setCharacter({});
-    }, [id]);
+   const {id} = useParams(); // devuelve un objeto use Params, el id lo recibe desde app <Detail/>
+   const [character, setCharacter] = useState ({}); // con esto inicia {} 
+  
+   useEffect(() => { // simula los ciclos de vida 
+       axios(`${URL_BASE}/${id}?key=${API_KEY}`).then(({ data }) => {
+          if (data.name) {
+             setCharacter(data);
+          } else {
+            alert('No hay personajes con ese ID');
+          }
+       });
+       return setCharacter({});
+    }, [id]); // useEfect depende desde id, sino se crea loop infinito
 
 
     return(
-      <div>
-     
-    
-      <button onClick={() => navigate('/home')} className={styles.btn}>BACK</button>
-      
-       <div className ={styles.container}>
-         
-          <img className={styles.img} src={character.image} alt='not found'/>
-          <h1 className={styles.h1}>Name: {character.name}</h1>
-          <h1 className={styles.h1}>Status: {character.status}</h1>
-          <h1 className={styles.h1}>Specie: {character.species}</h1>
-          <h1 className={styles.h1}>Gender: {character.gender}</h1>
-          <h1 className={styles.h1}>Origin: {character.origin?.name}</h1>
-          <h1 className={styles.h1}>Location: {character.location?.name}</h1>
-         
-       </div> 
+       <div className={style.detail}>
+           <img src={character?.image} alt={character?.name} />
+           <h2>{character?.name}</h2>
+           <h2>{character?.status}</h2>
+           <h2>{character?.species}</h2>
+           <h2>{character?.gender}</h2>
+           <h2>{character?.origin?.name}</h2>
        </div>
-    )
+   )
 }
+
 
 export default Detail;

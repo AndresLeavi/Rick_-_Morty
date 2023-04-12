@@ -1,74 +1,75 @@
 import './App.css';
-import Cards from './components/Cards';
-import Nav from './components/Nav/Nav'; 
+import Cards from './components/Cards/Cards.jsx';
+import Nav from './components/Nav/Nav.jsx';
 import About from './components/About/About';
 import Detail from './components/Detail/Detail';
-import axios from 'axios'; 
-import { Routes, Route } from 'react-router-dom';
-import { useState, useEffect, useLocation, useNavigate } from 'react';
+
+import {useState, useEffect} from 'react';
+import axios from 'axios';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+
 import Form from './components/Form/Form';
-import Contact from './components/Contact/Contact'
-
-
 
 const URL_BASE = 'https://be-a-rym.up.railway.app/api/character';
 const API_KEY = '4df0e452e97d.cf900310493aaf10e4b9';
 
+const email = 'admin@admin.com';
+const password = 'admin123';
+
+
 function App() {
-   const [characters, setCharacters] = useState([]);
 
    const location = useLocation();
-
-   const [access, setAccess] = useState(false)
-
-   const username = 'andresleavi@gmail.com';
-
-   const password = 'Andres1997';
-
    const navigate = useNavigate();
-
-   function Login(userData) {
-
-      if (userData.username === username && userData.password === password) {
-       setAccess(true);
-       navigate('/home')
-      }
-      }
+   const [characters, setCharacters] = useState([])
    
-     useEffect(() => {
-         !access && navigate('/');
-         }, [access]);
-    
-
-
-   const onSearch = (id) => {
-      axios(`${URL_BASE}/${id}?key=${API_KEY}`)
-      .then( response => response.data)
-      .then((data) => {
-         if (data.name) {
-            setCharacters((oldChars) => [...oldChars, data]);
-         } else {
-            window.alert('¡No hay personajes con este ID!');
-         }
-      });
+   const [acces, setAcces] = useState(false); // para acceder con mail-clave
+   const login = (userData) => {
+      
+      if (userData.email === email && userData.password === password){
+         setAcces(true);
+         navigate('/home');
+      }
    }
-   //axios funciona al igual que un $.get, la respesta que recibe de la libreria es data, y poterior a ello comienza a trabajar con eso que le brindo el caracter
+
+   useEffect(()=> {
+      !acces && navigate ('/') // si acces está en false me deja en "/"
+   }, [acces]) // sino me manda a home definido en el if previo
+   
+   
+   const onSearch = (id) => { // id llega desde searchbar (lo que escribe user en input)
+   axios(`${URL_BASE}/${id}?key=${API_KEY}`).then(({ data }) => {
+      if (data.name) {
+         setCharacters((oldChars) => [...oldChars, data]);
+      } else {
+         alert('¡No hay personajes con este ID!');
+      }
+   });
+}
 
    const onClose = (id) => {
-      const charactersFiltered = characters.filter(character => character.id !== Number(id));
-      setCharacters(charactersFiltered)
+      const charactersFiltered = characters.filter(character =>
+         character.id !== id) // 
+         setCharacters(charactersFiltered)
    }
 
    return (
-      <div>
-       <Nav onSearch={onSearch} />
-        
-        <Routes>           
-            <Route path='/home' element={ <Cards characters={characters} onClose={onClose}/> }/>
-            <Route path='/about' element={<About/>} />
-            <Route path= '/contact' element= {<Contact/>}/>
-            <Route path='/detail/:id' element={<Detail/>} />
-         </Routes>  
+      <div className='App'>
+
+         {
+            location.pathname !== '/'
+            ? <Nav onSearch={onSearch}/> /* nav lo voy a mostrar en todas las rutas */
+            : null    /* ? y : actuan como if else */
+         }
+
+         
+         
+         <Routes>
+            <Route path='/' element={ <Form login={login}/> } />
+            <Route path='/home' element={ <Cards characters={characters} onClose={onClose}/> } />
+            <Route path='/about' element={ <About/>} />
+            <Route path='/detail/:id' element={ <Detail/> } />       
+         </Routes>         
       </div>
    );
 }
