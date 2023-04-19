@@ -1,22 +1,24 @@
-import SearchBar from '../SearchBar/SearchBar'
+
+import SearchBar from '../SearchBar/SearchBar';
 import { Link } from 'react-router-dom';
-import style from './Nav.module.css'
 
+const Nav = ({ onSearch, setAccess }) => {
+    const handleLogOut = () => {
+        setAccess(false);
+    }
 
-const Nav = ({onSearch}) => { // acá llega la prop y hago destructuring
-    return(
-        <div className={style.bar}>
-            <button className={style.home} >
-                <Link to='/home'>HOME</Link>
-            </button>
+    return (
+        <nav>
 
-            <button className={style.about} >
-                <Link to='/about'>ABOUT</Link>    
-            </button>
+            <div>
+                <Link to='/about'> ABOUT </Link>
+                <Link to='/home'> HOME </Link>
+                <Link to='/favorites'> Favorites </Link>
+            </div>
 
-            
-            <SearchBar onSearch={onSearch} />
-        </div>
+            <button onClick={handleLogOut}>LOG OUT</button>
+            <SearchBar onSearch={onSearch}/>
+        </nav>
     )
 }
 

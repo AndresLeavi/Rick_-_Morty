@@ -33,7 +33,7 @@ function App() {
 
    useEffect(() => {
       !access && navigate('/')
-   }, [access])
+   }, [access, navigate])
 
    const onSearch = (id) => {
       axios(`${URL_BASE}/${id}?key=${API_KEY}`)
