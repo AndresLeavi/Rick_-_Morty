@@ -13,8 +13,8 @@ import Form from './components/Form/Form';
 const URL_BASE = 'https://be-a-rym.up.railway.app/api/character';
 const API_KEY = '4df0e452e97d.cf900310493aaf10e4b9';
 
-const email = 'admin@admin.com';
-const password = 'admin123';
+const email = 'admin1234@admin.com';
+const password = 'admin12344';
 
 
 function App() {
